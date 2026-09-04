@@ -190,78 +190,78 @@ sequenceDiagram
 
 ```text
 tsm_client/
-├── .agents/                               # Antigravity agent customization & skills
-│   └── skills/supabase-server/            # Guidelines for @supabase/server SDK usage
-├── dist/                                  # Production distribution bundle (generated via build)
-├── public/                                # Public static assets
-│   ├── favicon.ico                        # Dealership browser icon
-│   └── placeholder-vehicle.jpg            # Offline fallback imagery
+├── .agents/                               
+│   └── skills/supabase-server/            
+├── dist/                                 
+├── public/                                
+│   ├── favicon.ico                        
+│   └── placeholder-vehicle.jpg            
 ├── src/
-│   ├── assets/                            # Bundled images, logo assets, brand graphics
-│   │   └── tsm_logo.jpg                   # Official TSM Enterprises branding logo
-│   ├── components/                        # Modular, reusable presentation components
-│   │   ├── AdminRoute.jsx                 # Route protection guard validating admin role
-│   │   ├── CategoryCard.jsx               # Vehicle category thumbnail with stock badges
-│   │   ├── EnquiryModal.jsx               # Floating modal for fast single-vehicle enquiries
-│   │   ├── Footer.jsx                     # Dealership footer with links, address, timings
-│   │   ├── Navbar.jsx                     # Responsive navigation bar with auth & cart state
-│   │   └── VehicleCard.jsx                # Grid card with specs, badges, and quick actions
-│   ├── config/                            # Global runtime and security configurations
-│   │   └── securityConfig.js              # Rate limits, timeouts, demo switches, regexes
-│   ├── context/                           # React Context state management
-│   │   ├── AuthContext.jsx                # Session tracking, Supabase Auth, login/register
-│   │   ├── CartContext.jsx                # Persistent cart state, optimistic updates
-│   │   └── WishlistContext.jsx            # Saved vehicles state, toggle logic
-│   ├── data/                              # Static seed data & domain constants
-│   │   └── vehicles.js                    # Category definitions, brands, fuel types, seed data
-│   ├── lib/                               # Third-party library initializations
-│   │   └── supabase.js                    # Supabase client singleton & configuration flags
-│   ├── pages/                             # Routed view components
-│   │   ├── About.jsx                      # Dealership history, philosophy, trust credentials
-│   │   ├── Account.jsx                    # Customer profile dashboard & active enquiries
-│   │   ├── Cart.jsx                       # Customer shopping cart & checkout/enquiry trigger
-│   │   ├── Contact.jsx                    # Dealership contact information, map, enquiry form
-│   │   ├── ForgotPassword.jsx             # Password reset request page
-│   │   ├── Home.jsx                       # Dealership landing page with hero, search, categories
-│   │   ├── Login.jsx                      # User & admin sign-in portal
-│   │   ├── NotFound.jsx                   # 404 error page with quick recovery routes
-│   │   ├── ProductDetail.jsx              # Comprehensive single-vehicle showcase & specs
-│   │   ├── Products.jsx                   # Filterable, sortable vehicle catalog
-│   │   ├── Register.jsx                   # Customer account creation portal
-│   │   ├── ResetPassword.jsx              # Secure password change entry via token
-│   │   ├── Wishlist.jsx                   # Customer saved vehicles management page
-│   │   └── admin/                         # Back-office dealership management pages
-│   │       ├── AdminCustomers.jsx         # Customer ledger with search & contact links
-│   │       ├── AdminDashboard.jsx         # KPI overview (Vehicles, Stock, Enquiries)
-│   │       ├── AdminEnquiries.jsx         # Inbound leads ledger, status updater, email logs
-│   │       ├── AdminLayout.jsx            # Shared admin sidebar navigation and header
-│   │       └── AdminVehicles.jsx          # Inventory CRUD, status toggles, image uploader
-│   ├── services/                          # Data abstraction layer interfacing Supabase & storage
-│   │   ├── cartService.js                 # Cart table queries with localStorage fallback
-│   │   ├── customerService.js             # Profiles table queries for admin portal
-│   │   ├── enquiryService.js              # Enquiry submission, queries, status updates
-│   │   ├── rateLimiter.js                 # Client-side sliding-window rate limiting engine
-│   │   ├── vehicleService.js              # Vehicle CRUD, image uploader, Realtime listener
-│   │   └── wishlistService.js             # Wishlist table queries with localStorage fallback
-│   ├── utils/                             # Shared utility functions and validators
-│   │   ├── errorHandler.js                # Error sanitizer preventing credential exposure
-│   │   └── securityValidators.js          # Magic byte checkers, UUID validators, sanitizers
-│   ├── App.jsx                            # Application routes and global Provider tree
-│   ├── index.css                          # Tailwind CSS imports and custom design tokens
-│   └── main.jsx                           # Application DOM mount point
-├── supabase/                              # Cloud infrastructure code
-│   └── functions/                         # Supabase Deno Edge Functions
-│       ├── check-user-email/              # Edge function for secure user verification
-│       │   └── index.ts                   # Implementation using @supabase/server
-│       └── send-enquiry-email/            # Transactional email dispatcher with Resend
-│           └── index.ts                   # Branded customer and admin HTML templates
-├── .env.example                           # Template documentation of environment variables
-├── index.html                             # HTML5 template with SEO & font linkages
-├── package.json                           # NPM dependencies, scripts, and build metadata
-├── postcss.config.js                      # PostCSS configuration for Tailwind CSS
-├── supabase_schema.sql                    # Production-ready PostgreSQL schema, RLS, triggers
-├── tailwind.config.js                     # Custom themes, color palettes, and utilities
-└── vite.config.js                         # Vite build configuration with React plugin
+│   ├── assets/                            
+│   │   └── tsm_logo.jpg                   
+│   ├── components/                        
+│   │   ├── AdminRoute.jsx                 
+│   │   ├── CategoryCard.jsx               
+│   │   ├── EnquiryModal.jsx               
+│   │   ├── Footer.jsx                     
+│   │   ├── Navbar.jsx                     
+│   │   └── VehicleCard.jsx                
+│   ├── config/                            
+│   │   └── securityConfig.js              
+│   ├── context/                           
+│   │   ├── AuthContext.jsx                
+│   │   ├── CartContext.jsx                
+│   │   └── WishlistContext.jsx             
+│   ├── data/                              
+│   │   └── vehicles.js                    
+│   ├── lib/                               
+│   │   └── supabase.js                    
+│   ├── pages/                             
+│   │   ├── About.jsx                      
+│   │   ├── Account.jsx                    
+│   │   ├── Cart.jsx                       
+│   │   ├── Contact.jsx                    
+│   │   ├── ForgotPassword.jsx             
+│   │   ├── Home.jsx                       
+│   │   ├── Login.jsx                     
+│   │   ├── NotFound.jsx                   
+│   │   ├── ProductDetail.jsx              
+│   │   ├── Products.jsx                   
+│   │   ├── Register.jsx                  
+│   │   ├── ResetPassword.jsx             
+│   │   ├── Wishlist.jsx                   
+│   │   └── admin/                        
+│   │       ├── AdminCustomers.jsx         
+│   │       ├── AdminDashboard.jsx         
+│   │       ├── AdminEnquiries.jsx         
+│   │       ├── AdminLayout.jsx            
+│   │       └── AdminVehicles.jsx          
+│   ├── services/                           
+│   │   ├── cartService.js                 
+│   │   ├── customerService.js             
+│   │   ├── enquiryService.js              
+│   │   ├── rateLimiter.js                 
+│   │   ├── vehicleService.js              
+│   │   └── wishlistService.js             
+│   ├── utils/                             
+│   │   ├── errorHandler.js                
+│   │   └── securityValidators.js          
+│   ├── App.jsx                           
+│   ├── index.css                          
+│   └── main.jsx                          
+├── supabase/                              
+│   └── functions/                         
+│       ├── check-user-email/              
+│       │   └── index.ts                   
+│       └── send-enquiry-email/            
+│           └── index.ts                   
+├── .env.example                           
+├── index.html                             
+├── package.json                           
+├── postcss.config.js                      
+├── supabase_schema.sql                    
+├── tailwind.config.js                     
+└── vite.config.js                        
 ```
 
 ---
