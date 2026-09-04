@@ -1,0 +1,291 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── CSS Variables / Design Tokens ─── */
+:root {
+  --color-navy-950: #060b22;
+  --color-navy-900: #0a1435;
+  --color-navy-800: #0f1e4d;
+  --color-navy-700: #1d3066;
+  --color-red-600: #e01010;
+  --color-red-500: #ff2d2d;
+  --transition-base: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ─── Base Resets ─── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background-color: #f8f9fa;
+  color: #212529;
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Custom Scrollbar ─── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f3f5;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #adb5bd;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6c757d;
+}
+
+/* ─── Typography ─── */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+/* ─── Selection ─── */
+::selection {
+  background-color: rgba(224, 16, 16, 0.15);
+  color: #0a1435;
+}
+
+/* ─── Global Link Styles ─── */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ─── Container ─── */
+.container-custom {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+/* ─── Buttons ─── */
+.btn-primary {
+  @apply inline-flex items-center justify-center gap-2 px-6 py-3 bg-tsm-red-600 text-white font-semibold rounded-lg hover:bg-tsm-red-700 active:scale-95 transition-all duration-200 shadow-btn;
+}
+
+.btn-secondary {
+  @apply inline-flex items-center justify-center gap-2 px-6 py-3 bg-transparent border-2 border-white text-white font-semibold rounded-lg hover:bg-white hover:text-tsm-navy-900 active:scale-95 transition-all duration-200;
+}
+
+.btn-navy {
+  @apply inline-flex items-center justify-center gap-2 px-6 py-3 bg-tsm-navy-800 text-white font-semibold rounded-lg hover:bg-tsm-navy-900 active:scale-95 transition-all duration-200;
+}
+
+.btn-outline {
+  @apply inline-flex items-center justify-center gap-2 px-6 py-3 border-2 border-tsm-navy-800 text-tsm-navy-800 font-semibold rounded-lg hover:bg-tsm-navy-800 hover:text-white active:scale-95 transition-all duration-200;
+}
+
+.btn-ghost {
+  @apply inline-flex items-center justify-center gap-2 px-4 py-2 text-tsm-navy-700 font-medium rounded-lg hover:bg-tsm-navy-50 active:scale-95 transition-all duration-200;
+}
+
+/* ─── Cards ─── */
+.card {
+  @apply bg-white rounded-2xl shadow-card hover:shadow-card-hover transition-all duration-300;
+}
+
+.card-hover {
+  @apply hover:-translate-y-1;
+}
+
+/* ─── Section Spacing ─── */
+.section {
+  @apply py-16 md:py-20 lg:py-24;
+}
+
+.section-sm {
+  @apply py-10 md:py-14;
+}
+
+/* ─── Section Titles ─── */
+.section-title {
+  @apply text-3xl md:text-4xl font-bold text-tsm-navy-900 font-display;
+}
+
+.section-subtitle {
+  @apply text-lg text-tsm-gray-600 mt-3 max-w-2xl;
+}
+
+.section-badge {
+  @apply inline-block px-3 py-1 bg-tsm-red-50 text-tsm-red-600 text-sm font-semibold rounded-full mb-3 uppercase tracking-wide;
+}
+
+/* ─── Badge / Chip ─── */
+.badge {
+  @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold;
+}
+
+.badge-available {
+  @apply bg-green-100 text-green-700;
+}
+
+.badge-sold {
+  @apply bg-red-100 text-red-700;
+}
+
+.badge-featured {
+  @apply bg-yellow-100 text-yellow-700;
+}
+
+/* ─── Form Inputs ─── */
+.form-input {
+  @apply w-full px-4 py-3 bg-white border border-tsm-gray-300 rounded-lg text-tsm-gray-900 placeholder-tsm-gray-400 focus:outline-none focus:ring-2 focus:ring-tsm-red-500 focus:border-transparent transition-all duration-200;
+}
+
+.form-label {
+  @apply block text-sm font-medium text-tsm-gray-700 mb-1.5;
+}
+
+.form-select {
+  @apply w-full px-4 py-3 bg-white border border-tsm-gray-300 rounded-lg text-tsm-gray-900 focus:outline-none focus:ring-2 focus:ring-tsm-red-500 focus:border-transparent transition-all duration-200 cursor-pointer;
+}
+
+/* ─── Hero ─── */
+.hero-overlay {
+  background: linear-gradient(135deg,
+      rgba(6, 11, 34, 0.92) 0%,
+      rgba(15, 30, 77, 0.85) 50%,
+      rgba(29, 48, 102, 0.75) 100%);
+}
+
+/* ─── Vehicle Card ─── */
+.vehicle-card {
+  @apply bg-white rounded-2xl overflow-hidden shadow-card hover:shadow-card-hover hover:-translate-y-1 transition-all duration-300 border border-gray-100;
+}
+
+.vehicle-card-img {
+  @apply w-full h-52 object-cover transition-transform duration-500 group-hover:scale-105;
+}
+
+/* ─── Skeleton Loader ─── */
+.skeleton {
+  @apply bg-gray-200 animate-pulse rounded;
+}
+
+/* ─── Gradient Text ─── */
+.gradient-text {
+  background: linear-gradient(135deg, #ff2d2d, #e01010);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Divider ─── */
+.divider {
+  @apply h-1 w-16 bg-tsm-red-600 rounded-full;
+}
+
+/* ─── Sticky Navbar ─── */
+.navbar-scrolled {
+  backdrop-filter: blur(12px);
+  background: rgba(6, 11, 34, 0.95) !important;
+}
+
+/* ─── Mobile Menu Animation ─── */
+.mobile-menu-enter {
+  animation: slideDown 0.3s ease forwards;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ─── Image Gallery ─── */
+.gallery-thumb {
+  @apply cursor-pointer rounded-lg overflow-hidden border-2 border-transparent hover:border-tsm-red-500 transition-all duration-200;
+}
+
+.gallery-thumb.active {
+  @apply border-tsm-red-500;
+}
+
+/* ─── Star Rating ─── */
+.star-filled {
+  color: #f59e0b;
+}
+
+/* ─── Admin Sidebar ─── */
+.admin-nav-item {
+  @apply flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 cursor-pointer;
+}
+
+.admin-nav-item:hover {
+  @apply bg-white/10 text-white;
+}
+
+.admin-nav-item.active {
+  @apply bg-tsm-red-600 text-white;
+}
+
+/* ─── Enquiry Tag ─── */
+.status-new {
+  @apply bg-blue-100 text-blue-700;
+}
+
+.status-contacted {
+  @apply bg-yellow-100 text-yellow-700;
+}
+
+.status-negotiating {
+  @apply bg-purple-100 text-purple-700;
+}
+
+.status-completed {
+  @apply bg-green-100 text-green-700;
+}
+
+.status-cancelled {
+  @apply bg-red-100 text-red-700;
+}
+
+/* ─── Responsive Utilities ─── */
+@media (max-width: 640px) {
+  .section {
+    @apply py-10;
+  }
+
+  .section-title {
+    @apply text-2xl;
+  }
+}
+
+/* ─── Print ─── */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}

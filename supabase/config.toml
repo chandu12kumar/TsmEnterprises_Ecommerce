@@ -1,0 +1,8 @@
+project_id = "wpipwrxsweaopgjzuypf"
+
+[functions.send-enquiry-email]
+verify_jwt = false
+
+[functions.check-user-email]
+verify_jwt = false
+
