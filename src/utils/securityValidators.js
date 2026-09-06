@@ -133,10 +133,24 @@ export function validateCity(city) {
 
 /**
  * Validates UUID
+ * Returns object with { valid, value, error } for consistency with all schema validators.
  */
 export function validateUUID(id) {
-  if (typeof id !== 'string') return false
-  return SAFE_UUID_REGEX.test(id)
+  if (typeof id !== 'string' && typeof id !== 'number') {
+    return { valid: false, value: '', error: 'Vehicle ID is missing.' }
+  }
+
+  const str = String(id).trim()
+  if (!str || str === 'undefined' || str === 'null') {
+    return { valid: false, value: '', error: 'Vehicle ID is missing.' }
+  }
+
+  const isValid = SAFE_UUID_REGEX.test(str)
+  return {
+    valid: isValid,
+    value: str,
+    error: isValid ? null : 'Invalid vehicle ID format.',
+  }
 }
 
 /**

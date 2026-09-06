@@ -63,6 +63,10 @@ export default function AdminVehicles() {
   }
 
   const handleOpenEdit = (v) => {
+    if (!v?.id) {
+      toast.error('Vehicle ID is missing')
+      return
+    }
     setEditingVehicle(v)
     setFormData({
       ...v,
@@ -72,6 +76,10 @@ export default function AdminVehicles() {
   }
 
   const handleDelete = async (id) => {
+    if (!id) {
+      toast.error('Vehicle ID is missing')
+      return
+    }
     if (window.confirm('Are you sure you want to delete this vehicle?')) {
       const { success, error } = await vehicleService.deleteVehicle(id)
       if (success) {
@@ -85,6 +93,9 @@ export default function AdminVehicles() {
 
   const handleStatusChange = async (vehicle, newStatus) => {
     try {
+      if (!vehicle?.id) {
+        throw new Error('Vehicle ID is missing')
+      }
       setUpdatingId(vehicle.id)
 
       const normalizedStatus = String(newStatus)
@@ -120,7 +131,7 @@ export default function AdminVehicles() {
       )
     } catch (error) {
       console.error('Vehicle status update failed:', {
-        vehicleId: vehicle.id,
+        vehicleId: vehicle?.id,
         status: newStatus,
         error,
       })
@@ -183,7 +194,13 @@ export default function AdminVehicles() {
     }
 
     if (editingVehicle) {
-      const { error } = await vehicleService.updateVehicle(editingVehicle.id, {
+      const vehicleId = String(editingVehicle.id || '').trim()
+      if (!vehicleId) {
+        toast.error('Vehicle ID is missing')
+        return
+      }
+
+      const { error } = await vehicleService.updateVehicle(vehicleId, {
         ...formData,
         year: Number(formData.year),
         price: Number(formData.price),
@@ -194,6 +211,7 @@ export default function AdminVehicles() {
       if (!error) {
         toast.success('Vehicle updated successfully')
         loadVehicles()
+        setIsModalOpen(false)
       } else {
         toast.error(sanitizeErrorMessage(error, 'Update failed.'))
       }
@@ -209,12 +227,11 @@ export default function AdminVehicles() {
       if (!error) {
         toast.success('New vehicle added to inventory')
         loadVehicles()
+        setIsModalOpen(false)
       } else {
         toast.error(sanitizeErrorMessage(error, 'Failed to add vehicle.'))
       }
     }
-
-    setIsModalOpen(false)
   }
 
   const filtered = vehicles.filter(v => {

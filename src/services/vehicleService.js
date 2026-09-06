@@ -941,257 +941,195 @@ export const vehicleService = {
   /*                         UPDATE VEHICLE                                   */
   /* ======================================================================== */
 
-  async updateVehicle(
-    id,
-    updates
-  ) {
-    if (!isSupabaseConfigured) {
-      const all =
-        getLocalVehicles()
+  /* ======================================================================== */
+  /*                         UPDATE VEHICLE                                   */
+  /* ======================================================================== */
 
-      const updated =
-        all.map((vehicle) =>
-          vehicle.id === id
-            ? {
-              ...vehicle,
-              ...updates,
-            }
-            : vehicle
-        )
+  async updateVehicle(id, updates) {
+    const vehicleId = String(id || '').trim()
+
+    if (!id || !vehicleId || vehicleId === 'undefined' || vehicleId === 'null') {
+      return {
+        data: null,
+        error: new Error('Vehicle ID is missing.')
+      }
+    }
+
+    const uuidCheck = validateUUID(vehicleId)
+    if (!uuidCheck.valid) {
+      return {
+        data: null,
+        error: new Error('Invalid vehicle ID format.')
+      }
+    }
+
+    if (!isSupabaseConfigured) {
+      const all = getLocalVehicles()
+      const existing = all.find((v) => v.id === vehicleId)
+      if (!existing) {
+        return {
+          data: null,
+          error: new Error('Vehicle not found.')
+        }
+      }
+
+      const updated = all.map((vehicle) =>
+        vehicle.id === vehicleId
+          ? {
+            ...vehicle,
+            ...updates,
+          }
+          : vehicle
+      )
 
       saveLocalVehicles(updated)
 
       return {
-        data:
-          updated.find(
-            (v) => v.id === id
-          ) || null,
-
+        data: updated.find((v) => v.id === vehicleId) || null,
         error: null,
       }
     }
 
     try {
-      if (!validateUUID(id).valid) {
-        throw new Error(
-          'Invalid vehicle ID format.'
-        )
-      }
-
       const valCheck = validateVehiclePayload(updates, true)
       if (!valCheck.valid) {
         throw new Error(valCheck.error || 'Invalid vehicle update payload.')
       }
 
+      console.log('Updating vehicle:', {
+        vehicleId,
+        isString: typeof vehicleId,
+        length: vehicleId?.length,
+      })
+
       const dbUpdates = {}
 
-      if (
-        updates.name !== undefined
-      ) {
-        dbUpdates.name =
-          updates.name
+      if (updates.name !== undefined) {
+        dbUpdates.name = updates.name.trim()
       }
 
-      if (
-        updates.category !==
-        undefined
-      ) {
-        dbUpdates.category =
-          updates.category
+      if (updates.category !== undefined) {
+        dbUpdates.category = updates.category
       }
 
-      if (
-        updates.brand !== undefined
-      ) {
-        dbUpdates.brand =
-          updates.brand
+      if (updates.brand !== undefined) {
+        dbUpdates.brand = updates.brand ? updates.brand.trim() : null
       }
 
-      if (
-        updates.model !== undefined
-      ) {
-        dbUpdates.model =
-          updates.model
+      if (updates.model !== undefined) {
+        dbUpdates.model = updates.model ? updates.model.trim() : null
       }
 
-      if (
-        updates.year !== undefined &&
-        updates.year !== ''
-      ) {
-        dbUpdates.year =
-          Number(updates.year)
+      if (updates.year !== undefined && updates.year !== '') {
+        dbUpdates.year = Number(updates.year)
       }
 
-      if (
-        updates.price !== undefined &&
-        updates.price !== ''
-      ) {
-        dbUpdates.price =
-          Number(updates.price)
+      if (updates.price !== undefined && updates.price !== '') {
+        dbUpdates.price = Number(updates.price)
       }
 
-      if (
-        updates.fuelType !==
-        undefined
-      ) {
-        dbUpdates.fuel_type =
-          updates.fuelType
+      if (updates.fuelType !== undefined) {
+        dbUpdates.fuel_type = updates.fuelType
       }
 
-      if (
-        updates.transmission !==
-        undefined
-      ) {
-        dbUpdates.transmission =
-          updates.transmission
+      if (updates.transmission !== undefined) {
+        dbUpdates.transmission = updates.transmission
       }
 
-      if (
-        updates.kmDriven !==
-        undefined &&
-        updates.kmDriven !== ''
-      ) {
-        dbUpdates.km_driven =
-          Number(
-            updates.kmDriven
-          )
+      if (updates.kmDriven !== undefined && updates.kmDriven !== '') {
+        dbUpdates.km_driven = Number(updates.kmDriven)
       }
 
-      if (
-        updates.location !==
-        undefined
-      ) {
-        dbUpdates.location =
-          updates.location
+      if (updates.location !== undefined) {
+        dbUpdates.location = updates.location ? updates.location.trim() : null
       }
 
-      if (
-        updates.condition !==
-        undefined
-      ) {
-        dbUpdates.condition =
-          updates.condition
+      if (updates.condition !== undefined) {
+        dbUpdates.condition = updates.condition
       }
 
-      if (
-        updates.registrationYear !==
-        undefined &&
-        updates.registrationYear !==
-        ''
-      ) {
-        dbUpdates.registration_year =
-          Number(
-            updates.registrationYear
-          )
+      if (updates.registrationYear !== undefined && updates.registrationYear !== '') {
+        dbUpdates.registration_year = Number(updates.registrationYear)
       }
 
-      if (
-        updates.insuranceStatus !==
-        undefined
-      ) {
-        dbUpdates.insurance_status =
-          updates.insuranceStatus
+      if (updates.insuranceStatus !== undefined) {
+        dbUpdates.insurance_status = updates.insuranceStatus
       }
 
-      if (
-        updates.status !== undefined
-      ) {
-        dbUpdates.status =
-          updates.status
+      if (updates.status !== undefined) {
+        dbUpdates.status = updates.status
       }
 
-      if (
-        updates.featured !==
-        undefined
-      ) {
-        dbUpdates.featured =
-          Boolean(
-            updates.featured
-          )
+      if (updates.featured !== undefined) {
+        dbUpdates.featured = Boolean(updates.featured)
       }
 
-      if (
-        updates.description !==
-        undefined
-      ) {
-        dbUpdates.description =
-          updates.description
+      if (updates.description !== undefined) {
+        dbUpdates.description = updates.description ? updates.description.trim() : ''
       }
 
-      dbUpdates.updated_at =
-        new Date().toISOString()
+      dbUpdates.updated_at = new Date().toISOString()
 
-      const {
-        data,
-        error,
-      } = await supabase
+      const { data, error } = await supabase
         .from('vehicles')
         .update(dbUpdates)
-        .eq('id', id)
+        .eq('id', vehicleId)
         .select('*')
-        .single()
+        .maybeSingle()
 
       if (error) {
+        if (error.code === '42501' || /row-level\s+security|permission/i.test(error.message)) {
+          throw new Error('You are not authorized to update this vehicle.')
+        }
         throw error
+      }
+
+      if (!data) {
+        // Vehicle record was not updated. Inspect if vehicle exists or RLS restricted access
+        const { data: checkData, error: checkError } = await supabase
+          .from('vehicles')
+          .select('id')
+          .eq('id', vehicleId)
+          .maybeSingle()
+
+        if (checkError && (checkError.code === '42501' || /row-level\s+security|permission/i.test(checkError.message))) {
+          throw new Error('You are not authorized to update this vehicle.')
+        }
+
+        if (!checkData) {
+          throw new Error('Vehicle not found.')
+        } else {
+          throw new Error('You are not authorized to update this vehicle.')
+        }
       }
 
       /* -------------------------------------------------------------------- */
       /*                  Replace Existing Images                             */
       /* -------------------------------------------------------------------- */
 
-      if (
-        Array.isArray(updates.images)
-      ) {
-        const {
-          error: deleteError,
-        } = await supabase
+      if (Array.isArray(updates.images)) {
+        const { error: deleteError } = await supabase
           .from('vehicle_images')
           .delete()
-          .eq(
-            'vehicle_id',
-            id
-          )
+          .eq('vehicle_id', vehicleId)
 
         if (deleteError) {
           throw deleteError
         }
 
-        const imageRows =
-          updates.images
-            .filter(
-              (url) =>
-                typeof url ===
-                'string' &&
-                url.trim()
-            )
-            .map(
-              (url, index) => ({
-                vehicle_id: id,
+        const imageRows = updates.images
+          .filter((url) => typeof url === 'string' && url.trim())
+          .map((url, index) => ({
+            vehicle_id: vehicleId,
+            image_url: url.trim(),
+            storage_path: null,
+            is_primary: index === 0,
+          }))
 
-                image_url:
-                  url.trim(),
-
-                storage_path:
-                  null,
-
-                is_primary:
-                  index === 0,
-              })
-            )
-
-        if (
-          imageRows.length > 0
-        ) {
-          const {
-            error:
-            imageError,
-          } = await supabase
-            .from(
-              'vehicle_images'
-            )
-            .insert(
-              imageRows
-            )
+        if (imageRows.length > 0) {
+          const { error: imageError } = await supabase
+            .from('vehicle_images')
+            .insert(imageRows)
 
           if (imageError) {
             throw imageError
@@ -1204,10 +1142,7 @@ export const vehicleService = {
         error: null,
       }
     } catch (error) {
-      console.error(
-        'updateVehicle error:',
-        error
-      )
+      console.error('updateVehicle error:', error)
 
       return {
         data: null,
@@ -1223,15 +1158,28 @@ export const vehicleService = {
   /* ======================================================================== */
 
   async deleteVehicle(id) {
+    const vehicleId = String(id || '').trim()
+
+    if (!id || !vehicleId || vehicleId === 'undefined' || vehicleId === 'null') {
+      return {
+        success: false,
+        error: new Error('Vehicle ID is missing.')
+      }
+    }
+
+    const uuidCheck = validateUUID(vehicleId)
+    if (!uuidCheck.valid) {
+      return {
+        success: false,
+        error: new Error('Invalid vehicle ID format.')
+      }
+    }
+
     if (!isSupabaseConfigured) {
-      const all =
-        getLocalVehicles()
+      const all = getLocalVehicles()
 
       saveLocalVehicles(
-        all.filter(
-          (vehicle) =>
-            vehicle.id !== id
-        )
+        all.filter((vehicle) => vehicle.id !== vehicleId)
       )
 
       return {
@@ -1241,18 +1189,15 @@ export const vehicleService = {
     }
 
     try {
-      if (!validateUUID(id).valid) {
-        throw new Error('Invalid vehicle ID format.')
-      }
-
-      const {
-        error,
-      } = await supabase
+      const { error } = await supabase
         .from('vehicles')
         .delete()
-        .eq('id', id)
+        .eq('id', vehicleId)
 
       if (error) {
+        if (error.code === '42501' || /row-level\s+security|permission/i.test(error.message)) {
+          throw new Error('You are not authorized to delete this vehicle.')
+        }
         throw error
       }
 
@@ -1261,10 +1206,7 @@ export const vehicleService = {
         error: null,
       }
     } catch (error) {
-      console.error(
-        'deleteVehicle error:',
-        error
-      )
+      console.error('deleteVehicle error:', error)
 
       return {
         success: false,
